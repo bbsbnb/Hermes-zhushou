@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+<div id="app">
+  <div class="toolbar">
+    <button class="btn-icon" id="btnAddFolder" title="新建分类">+分类</button>
+    <button class="btn-icon" id="btnAddPrompt" title="新建提示词">+提示词</button>
+    <button class="btn-icon" id="btnSettings" title="设置">&#9881;</button>
+  </div>
+  <div id="settingsPanel" class="hidden">
+    <div class="settings-header"><span>设置</span><button class="btn-close" id="btnCloseSettings">&#10005;</button></div>
+    <div class="settings-body">
+      <label>API Key</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-..." spellcheck="false">
+      <label>API 地址</label>
+      <input type="text" id="apiUrlInput" value="https://api.deepseek.com/v1/chat/completions" spellcheck="false">
+      <label>模型</label>
+      <input type="text" id="modelInput" value="deepseek-chat" spellcheck="false">
+      <button class="btn-primary" id="btnSaveSettings">保存</button>
+      <span id="settingsStatus" class="status-text"></span>
+    </div>
+  </div>
+  <div class="main-layout">
+    <div class="folder-panel">
+      <div class="panel-title">分类</div>
+      <div id="folderList" class="folder-list"></div>
+    </div>
+    <div class="prompt-panel">
+      <div class="panel-title" id="currentFolderTitle">所有提示词</div>
+      <div id="promptList" class="prompt-list"></div>
+    </div>
+  </div>
+  <div id="emptyState" class="empty-state hidden"><p>暂无数据</p></div>
+  <div id="copyToast" class="toast hidden">已复制到剪贴板</div>
+</div>
+<div id="overlay" class="overlay hidden"></div>
+<div id="editModal" class="modal hidden">
+  <div class="modal-header"><span id="modalTitle">编辑</span><button class="btn-close" id="btnCloseModal">&#10005;</button></div>
+  <div class="modal-body">
+    <label>名称</label>
+    <input type="text" id="editName" spellcheck="false" placeholder="提示词名称">
+    <label>分类</label>
+    <select id="editFolder"></select>
+    <label>内容</label>
+    <textarea id="editContent" rows="6" spellcheck="false" placeholder="使用 {VariableName} 作为占位符"></textarea>
+    <div class="modal-actions">
+      <button class="btn-primary" id="btnSaveEdit">保存</button>
+      <button class="btn-danger hidden" id="btnDeleteItem">删除</button>
+    </div>
+  </div>
+</div>
+<div id="aiModal" class="modal hidden">
+  <div class="modal-header"><span>AI 优化</span><button class="btn-close" id="btnCloseAi">&#10005;</button></div>
+  <div class="modal-body">
+    <label>操作</label>
+    <select id="aiAction">
+      <option value="polish">润色</option>
+      <option value="expand">扩写</option>
+      <option value="simplify">精简</option>
+      <option value="generate">根据描述生成</option>
+    </select>
+    <label>输入</label>
+    <textarea id="aiInput" rows="4" spellcheck="false" placeholder="粘贴提示词或描述工程场景..."></textarea>
+    <label>结果</label>
+    <textarea id="aiOutput" rows="6" spellcheck="false" readonly placeholder="AI 处理结果"></textarea>
+    <div class="modal-actions">
+      <button class="btn-primary" id="btnAiRun">执行</button>
+      <button class="btn-secondary" id="btnAiCopy">复制结果</button>
+    </div>
+    <span id="aiStatus" class="status-text"></span>
+  </div>
+</div>
+<div id="varModal" class="modal hidden">
+  <div class="modal-header"><span>填写变量</span><button class="btn-close" id="btnCloseVar">&#10005;</button></div>
+  <div class="modal-body" id="varFields">
+    <p class="var-hint">提示词中的变量需要填写：</p>
+  </div>
+  <div class="modal-actions" style="padding:8px 12px">
+    <button class="btn-primary" id="btnVarCopy">复制并替换变量</button>
+    <button class="btn-secondary" id="btnVarCopyRaw">直接复制原文</button>
+  </div>
+</div>
+<script src="sidepanel.js"></script>
+</body>
+</html>
